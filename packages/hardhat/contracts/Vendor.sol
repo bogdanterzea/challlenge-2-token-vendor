@@ -23,7 +23,19 @@ contract Vendor is Ownable {
   }
 
   // ToDo: create a withdraw() function that lets the owner withdraw ETH
+  function withdraw() external {
+    (bool success, ) = owner().call{value: address(this).balance}('');
+    require(success, 'ERROR at withdrawing');
+  }
 
   // ToDo: create a sellTokens() function:
+  function sellTokens(uint256 amount) external {
+    // yourToken.transfer(owner(), amount);
+    (bool success ) = yourToken.transferFrom(msg.sender, address(this), amount);
+    require(success, 'Transfer failed');
+
+    (bool payedSeller, ) = msg.sender.call{value: amount / tokensPerEth}('');
+    require(payedSeller, 'Unable to pay seller');
+  }
 
 }
