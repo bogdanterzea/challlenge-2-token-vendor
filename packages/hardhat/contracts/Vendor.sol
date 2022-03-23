@@ -30,9 +30,7 @@ contract Vendor is Ownable {
 
   // ToDo: create a sellTokens() function:
   function sellTokens(uint256 amount) external {
-    // yourToken.transfer(owner(), amount);
-    (bool success ) = yourToken.transferFrom(msg.sender, address(this), amount);
-    require(success, 'Transfer failed');
+    yourToken.transferFrom(msg.sender, address(this), amount);
 
     (bool payedSeller, ) = msg.sender.call{value: amount / tokensPerEth}('');
     require(payedSeller, 'Unable to pay seller');
